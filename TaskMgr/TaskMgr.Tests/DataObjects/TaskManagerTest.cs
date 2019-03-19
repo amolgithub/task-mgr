@@ -82,6 +82,12 @@ namespace TaskMgr.Tests.DataObjects
         [TestMethod]
         public void GetTask_ExistingTask()
         {
+            _mockContext = new Mock<TaskMgrEntities>();
+            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
+            var taskDao = new TaskManager();
+            var actualTask = taskDao.GetTask(1);
+            Assert.IsNotNull(actualTask);
+            Assert.AreEqual("Task 1", actualTask.TaskName);
         }
 
         [TestMethod]
