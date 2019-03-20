@@ -93,19 +93,54 @@ namespace TaskMgr.Tests.DataObjects
         [TestMethod]
         public void GetTAsk_NonExistingTask()
         {
-
+            _mockContext = new Mock<TaskMgrEntities>();
+            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
+            var taskDao = new TaskManager();
+            var actualTask = taskDao.GetTask(10);
+            Assert.IsNull(actualTask);
         }
 
         [TestMethod]
         public void UpdateTask_ExistingTask()
         {
+            _mockContext = new Mock<TaskMgrEntities>();
+            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
+            var taskDao = new TaskManager();
+            var modifiedTask = new Task
+            {
+                TaskId = 2,
+                TaskName = "Perform Review",
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(2),
+                Priority = 1,
+                Status = "I"
+            };
 
+            taskDao.UpdateTask(modifiedTask);
+            var updatedTask = taskDao.GetTask(2);
+            Assert.IsNotNull(updatedTask);
+            Assert.AreEqual("Perform Review", updatedTask.TaskName);
         }
 
         [TestMethod]
         public void UpdateTask_NonExistingTask()
         {
+            _mockContext = new Mock<TaskMgrEntities>();
+            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
+            var taskDao = new TaskManager();
+            var modifiedTask = new Task
+            {
+                TaskId = 10,
+                TaskName = "Perform Review",
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(2),
+                Priority = 1,
+                Status = "I"
+            };
 
+            taskDao.UpdateTask(modifiedTask);
+            var updatedTask = taskDao.GetTask(10);
+            Assert.IsNull(updatedTask);
         }
     }
 }
