@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from 'selenium-webdriver/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Task } from '../task';
 
@@ -8,18 +8,18 @@ import { Task } from '../task';
 })
 export class TaskService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-getTaskList():Observable<Task[]> {
- return;
+getTaskList():Observable<Task[]> {  
+ return this.http.get<Task[]>('http://localhost/task/all');
 }
 
-getTask(): Observable<Task> {
-  return;
+getTask(taskId: number): Observable<Task> {
+  return this.http.get<Task>('http://localhost/task/' + taskId);
 }
 
-addTask(newTask: Task): void {
-  return;
+addTask(newTask: Task) {
+  return this.http.post('http://localhost/task/add', newTask);
 }
 
 updateTask(modifiedTask: Task): Observable<object> {

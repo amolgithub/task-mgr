@@ -1,14 +1,18 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { TestBed, getTestBed, inject, fakeAsync } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TaskService } from './task.service';
 import { Task } from '../task';
+import { ExpectedConditions } from 'protractor';
 
-describe('TaskService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientModule],
-    providers: [TaskService]
-  }));
+describe('TaskService', () => {  
 
+  beforeEach(() => {    
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [TaskService]
+    });
+  });  
+  
   const taskList: Task[] = [
     {
       taskId: 1,
@@ -36,11 +40,94 @@ describe('TaskService', () => {
       priority: 2,
       status: 'I',
       parentId: 1
-    }
+    }      
   ];
-  
-  it('should be created', () => {
-    const service: TaskService = TestBed.get(TaskService);
-    expect(service).toBeTruthy();
-  });
-});
+   it('TaskService is created',
+   inject([HttpTestingController, TaskService],(httpMock: HttpTestingController, service: TaskService) => {
+      expect(service).toBeTruthy();
+   })
+
+   );
+
+   it('getTaskList() should return Observable<Task[]>',   
+    inject([HttpTestingController, TaskService], (httpMock: HttpTestingController, service: TaskService) => {
+      const url = 'http://localhost/task/all';
+      const expectedResponse = taskList;
+      let actualResponse = null;
+
+      service.getTaskList().subscribe(receivedResponse => {
+          actualResponse = receivedResponse;
+          expect(actualResponse).toEqual(expectedResponse);
+          //expect(actualResponse.status).toBe(200);
+        },
+        (error: any) => {}
+      );
+
+      
+      const requestWrapper = httpMock.expectOne({url: url});
+      requestWrapper.flush(expectedResponse);
+      expect(requestWrapper.request.method).toEqual('GET');      
+    })  
+  );
+
+    
+  it('getTask() should return Observable<Task>',   
+    inject([HttpTestingController, TaskService], (httpMock: HttpTestingController, service: TaskService) => {
+      const url = 'http://localhost/task/2';
+      const expectedResponse = {
+        taskId: 2,
+        taskName: 'Task2',
+        startDate: '10-Jan-2019',
+        endDate: '10-Feb-2019',
+        priority: 2,
+        status: 'I',
+        parentId: null
+      };
+      let actualResponse = null;
+
+      service.getTask(2).subscribe(receivedResponse => {
+          actualResponse = receivedResponse;
+          expect(actualResponse).toEqual(expectedResponse);
+          //expect(actualResponse.status).toBe(200);
+        },
+        (error: any) => {}
+      );
+
+      
+      const requestWrapper = httpMock.expectOne({url: url});
+      requestWrapper.flush(expectedResponse);
+      expect(requestWrapper.request.method).toEqual('GET');      
+    })  
+  );
+
+  it('addTask() should add new task',   
+    inject([HttpTestingController, TaskService], (httpMock: HttpTestingController, service: TaskService) => {
+      const url = 'http://localhost/task/add';
+      const newTask = {
+        taskId: 2,
+        taskName: 'Task2',
+        startDate: '10-Jan-2019',
+        endDate: '10-Feb-2019',
+        priority: 2,
+        status: 'I',
+        parentId: null
+      };
+      const expectedResponse = '<form />';
+      let actualResponse = null;
+
+      service.addTask(newTask).subscribe(receivedResponse => {
+          actualResponse = receivedResponse;
+          expect(actualResponse).toEqual(expectedResponse);
+          //expect(actualResponse.status).toBe(200);
+        },
+        (error: any) => {}
+      );
+
+      
+      const requestWrapper = httpMock.expectOne({url: url, method: 'POST'});
+      requestWrapper.flush(expectedResponse);
+      expect(requestWrapper.request.method).toEqual('POST');      
+    })  
+  );
+}
+);
