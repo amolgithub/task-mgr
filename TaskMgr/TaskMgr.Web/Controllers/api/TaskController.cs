@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,12 @@ namespace TaskMgr.Web.Controllers.api
 {
     public class TaskController : ApiController
     {
+        private ILogger _logger;
+        
+        public TaskController()
+        {
+            //_logger = LoggerManager.GetLogger("MyTask");
+        }
         public IEnumerable<Task> All()
         {
             return null;
@@ -20,9 +27,10 @@ namespace TaskMgr.Web.Controllers.api
             return null;
         }
 
+        [HttpPost]
         public void Add(Task newTask)
         {
-
+            var t = newTask;
         }
 
         public void Update(Task modifiedTask)
