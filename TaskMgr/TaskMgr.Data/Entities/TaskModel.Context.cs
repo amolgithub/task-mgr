@@ -13,7 +13,7 @@ namespace TaskMgr.Data.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TaskMgrEntities : DbContext
+    public partial class TaskMgrEntities : DbContext, ITaskContext
     {
         public TaskMgrEntities()
             : base("name=TaskMgrEntities")
@@ -24,7 +24,12 @@ namespace TaskMgr.Data.Entities
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        public void MarkAsModified(Task t)
+        {
+            Entry(t).State = EntityState.Modified;
+        }
+
         public virtual DbSet<Task> Tasks { get; set; }
     }
 }

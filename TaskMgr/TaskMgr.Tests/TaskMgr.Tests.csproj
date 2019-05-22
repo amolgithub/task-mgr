@@ -114,6 +114,9 @@
     <Compile Include="Controllers\TaskControllerTest.cs" />
     <Compile Include="DataObjects\TaskManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDbSet.cs" />
+    <Compile Include="TestTaskContext.cs" />
+    <Compile Include="TestTaskDbSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

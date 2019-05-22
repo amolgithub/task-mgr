@@ -8,19 +8,45 @@ namespace TaskMgr.Data.DataObjects
 {
     public class TaskManager
     {
-        public IEnumerable<Task> GetTasks()
+        ITaskContext _context;
+
+        public TaskManager(ITaskContext context)
         {
-            return null;
+            _context = context;
+        }
+        public IEnumerable<Task> GetTasks()
+        {            
+            return from t in _context.Tasks                   
+                   select t;
         }
 
         public Task GetTask(int taskId)
-        {
-            return null;
+        {            
+            var foundTask = from t in _context.Tasks
+                            where t.TaskId == taskId
+                            select t;
+
+            return foundTask.FirstOrDefault();
         }
 
         public void UpdateTask(Task modifiedTask)
         {
-
+            var foundTask = GetTask(modifiedTask.TaskId);
+            if(foundTask == null)
+            {
+                _context.Tasks.Add(modifiedTask);
+            }
+            else
+            {
+                foundTask.EndDate = modifiedTask.EndDate;
+                foundTask.ParentId = modifiedTask.ParentId;
+                foundTask.Priority = modifiedTask.Priority;
+                foundTask.StartDate = modifiedTask.StartDate;
+                foundTask.TaskName = modifiedTask.TaskName;
+                _context.MarkAsModified(foundTask);
+            }
+            
+            _context.SaveChanges();
         }
     }
 }

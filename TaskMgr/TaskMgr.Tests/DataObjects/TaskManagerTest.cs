@@ -68,12 +68,58 @@ namespace TaskMgr.Tests.DataObjects
             _mockTasks.As<IQueryable<Task>>().Setup(t => t.GetEnumerator()).Returns(_taskList.GetEnumerator());
         }
 
+        private ITaskContext GetTestContext()
+        {
+            var context = new TestTaskContext();
+            context.Tasks.Add(new Task
+            {
+                TaskId = 1,
+                TaskName = "Task 1",
+                Priority = 1,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(7),
+                Status = "I"
+            });
+
+            context.Tasks.Add(new Task
+            {
+                TaskId = 2,
+                TaskName = "Task 2",
+                Priority = 2,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddMonths(1),
+                Status = "I"
+            });
+
+            context.Tasks.Add(new Task
+            {
+                TaskId = 3,
+                TaskName = "Task 3",
+                Priority = 2,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddMonths(1),
+                Status = "I",
+                ParentId = 2
+            });
+
+            context.Tasks.Add(new Task
+            {
+                TaskId = 4,
+                TaskName = "Task 4",
+                Priority = 3,
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddMonths(2),
+                Status = "I",
+                ParentId = 2
+            });
+
+            return context;
+        }
+
         [TestMethod]
         public void GetTasks_ReturnsAllTasks()
-        {
-            _mockContext = new Mock<TaskMgrEntities>();
-            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
-            var taskDao = new TaskManager();
+        {            
+            var taskDao = new TaskManager(GetTestContext());
             var actualTaskList = taskDao.GetTasks();
             Assert.IsNotNull(actualTaskList);
             Assert.AreEqual(4, actualTaskList.Count());
@@ -81,10 +127,8 @@ namespace TaskMgr.Tests.DataObjects
 
         [TestMethod]
         public void GetTask_ExistingTask()
-        {
-            _mockContext = new Mock<TaskMgrEntities>();
-            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
-            var taskDao = new TaskManager();
+        {            
+            var taskDao = new TaskManager(GetTestContext());
             var actualTask = taskDao.GetTask(1);
             Assert.IsNotNull(actualTask);
             Assert.AreEqual("Task 1", actualTask.TaskName);
@@ -95,7 +139,7 @@ namespace TaskMgr.Tests.DataObjects
         {
             _mockContext = new Mock<TaskMgrEntities>();
             _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
-            var taskDao = new TaskManager();
+            var taskDao = new TaskManager(GetTestContext());
             var actualTask = taskDao.GetTask(10);
             Assert.IsNull(actualTask);
         }
@@ -105,7 +149,7 @@ namespace TaskMgr.Tests.DataObjects
         {
             _mockContext = new Mock<TaskMgrEntities>();
             _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
-            var taskDao = new TaskManager();
+            var taskDao = new TaskManager(GetTestContext());
             var modifiedTask = new Task
             {
                 TaskId = 2,
@@ -124,10 +168,8 @@ namespace TaskMgr.Tests.DataObjects
 
         [TestMethod]
         public void UpdateTask_NonExistingTask()
-        {
-            _mockContext = new Mock<TaskMgrEntities>();
-            _mockContext.Setup(t => t.Tasks).Returns(_mockTasks.Object);
-            var taskDao = new TaskManager();
+        { 
+            var taskDao = new TaskManager(GetTestContext());
             var modifiedTask = new Task
             {
                 TaskId = 10,
@@ -140,7 +182,7 @@ namespace TaskMgr.Tests.DataObjects
 
             taskDao.UpdateTask(modifiedTask);
             var updatedTask = taskDao.GetTask(10);
-            Assert.IsNull(updatedTask);
+            Assert.AreEqual(5, taskDao.GetTasks().Count());
         }
     }
 }
