@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../task';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-tasklist',
@@ -13,37 +14,44 @@ export class TasklistComponent implements OnInit {
   filter: any;
   criteria: any;
   
-  constructor() {     
-   this.taskList = [
-      {
-        taskId: 1,
-        taskName: 'Task1',
-        startDate: '2019-03-12',
-        endDate: '2019-03-17',
-        priority: 1,
-        status: 'I',
-        parentTask: null
-      },
-      {
-        taskId: 2,
-        taskName: 'Task2',
-        startDate: '2019-01-10',
-        endDate: '2019-02-10',
-        priority: 2,
-        status: 'I',
-        parentTask: null
-      },
-      {
-        taskId: 3,
-        taskName: 'Task3',
-        startDate: '2019-04-12',
-        endDate: '2019-04-20',
-        priority: 2,
-        status: 'I',
-        parentTask: "Task1"
-      }      
-    ];
-
+  constructor(private service: TaskService) {     
+  //  this.taskList = [
+  //     {
+  //       taskId: 1,
+  //       taskName: 'Task1',
+  //       startDate: '2019-03-12',
+  //       endDate: '2019-03-17',
+  //       priority: 1,
+  //       status: 'I',
+  //       parentTask: null
+  //     },
+  //     {
+  //       taskId: 2,
+  //       taskName: 'Task2',
+  //       startDate: '2019-01-10',
+  //       endDate: '2019-02-10',
+  //       priority: 2,
+  //       status: 'I',
+  //       parentTask: null
+  //     },
+  //     {
+  //       taskId: 3,
+  //       taskName: 'Task3',
+  //       startDate: '2019-04-12',
+  //       endDate: '2019-04-20',
+  //       priority: 2,
+  //       status: 'I',
+  //       parentTask: "Task1"
+  //     }      
+  //   ];
+    service.getTaskList()    
+    .subscribe(response => {
+      console.log(response); 
+      this.taskList = response;
+    });
+    /*(tasks => {this.taskList = tasks},
+      err => console.error(err));*/
+    console.log(this.taskList);
     this.taskSource = this.taskList;
   }
 

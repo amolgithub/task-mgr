@@ -10,6 +10,7 @@ using System.Web.Routing;
 
 namespace TaskMgr
 {
+
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
@@ -19,7 +20,7 @@ namespace TaskMgr
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            XmlConfigurator.Configure();
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

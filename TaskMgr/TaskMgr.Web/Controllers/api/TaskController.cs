@@ -1,4 +1,6 @@
-﻿using log4net.Core;
+﻿using log4net;
+using log4net.Appender;
+using log4net.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +9,17 @@ using System.Net.Http;
 using System.Web.Http;
 using TaskMgr.Data.DataObjects;
 using TaskMgr.Data.Entities;
+using TaskMgr.Web.Util;
 
 namespace TaskMgr.Web.Controllers.api
 {
+    [ApiActionFilter, ApiExceptionFilter]
     public class TaskController : ApiController
-    {
-        private ILogger _logger;
+    {        
         private TaskManager _taskMgr;
 
         public TaskController()
-        {
-            //_logger = LoggerManager.GetLogger("MyTask");
+        {           
             _taskMgr = new TaskManager(new TaskMgrEntities());
         }
 
@@ -28,8 +30,9 @@ namespace TaskMgr.Web.Controllers.api
 
         [HttpGet]
         public IEnumerable<Task> All()
-        {            
-            return _taskMgr.GetTasks();
+        {
+            throw new Exception("Test exception");
+            return _taskMgr.GetTasks().ToArray();
         }
 
         [HttpGet]

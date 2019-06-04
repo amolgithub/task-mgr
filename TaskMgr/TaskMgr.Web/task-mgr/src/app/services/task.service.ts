@@ -1,18 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { Task } from '../task';
 
-const baseUrl = "http://localhost:50019/api/";
+const baseUrl = "http://localhost/api/";
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':'application/json'
+  })
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  constructor(private http: HttpClient) { }
+constructor(private http: HttpClient) { }
 
-getTaskList():Observable<Task[]> {  
- return this.http.get<Task[]>(baseUrl + 'task/all');
+getTaskList():Observable<object> {  
+  // return of<Task[]>([ {
+  //         taskId: 1,
+  //         taskName: 'Task1',
+  //         startDate: '2019-03-12',
+  //         endDate: '2019-03-17',
+  //         priority: 1,
+  //         status: 'I',
+  //         parentId: null
+  //       }]);
+  console.log("getTaskList()" + baseUrl + 'task/all');
+  
+ return this.http.get<Task[]>(baseUrl + 'task/all',httpOptions);//.map(response => response.json());
 }
 
 getTask(taskId: number): Observable<Task> {
