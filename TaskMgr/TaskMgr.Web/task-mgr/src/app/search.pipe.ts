@@ -10,30 +10,30 @@ export class SearchPipe implements PipeTransform {
     
     if(criteria == null) return filteredTasks;
 
-    if(criteria.taskName != null){
-      filteredTasks = filteredTasks.filter(task => task.taskName.indexOf(criteria.taskName) !== -1);
+    if(criteria.TaskName != null){
+      filteredTasks = filteredTasks.filter(task => task.TaskName.indexOf(criteria.TaskName) !== -1);
     }
       
-    if(criteria.parentTask != null && criteria.parentTask !== ''){
-      filteredTasks = filteredTasks.filter(task => (task.parentTask != null && task.parentTask.indexOf(criteria.parentTask) !== -1));
+    if(criteria.ParentTask != null && criteria.ParentTask !== ''){
+      filteredTasks = filteredTasks.filter(task => (task.ParentTask != null && task.ParentTask.indexOf(criteria.ParentTask) !== -1));
     }
 
-    if(criteria.priorityFrom != null){
-      filteredTasks = filteredTasks.filter(task => (task.priority >= criteria.priorityFrom));
+    if(criteria.PriorityFrom != null){
+      filteredTasks = filteredTasks.filter(task => (task.Priority >= criteria.PriorityFrom));
     }
 
     if(criteria.priorityTo != null){
-      filteredTasks = filteredTasks.filter(task => (task.priority <= criteria.priorityTo));
+      filteredTasks = filteredTasks.filter(task => (task.Priority <= criteria.PriorityTo));
     }
 
-    console.log(criteria.startDate);
-    if(criteria.startDate != null) {
-      filteredTasks = filteredTasks.filter(task => new Date(task.startDate) >= new Date(criteria.startDate));      
+    //console.log(criteria.StartDate);
+    if(criteria.StartDate != null) {
+      filteredTasks = filteredTasks.filter(task => new Date(task.StartDate) >= new Date(criteria.StartDate));      
     }
 
-    console.log(criteria.endDate);
-    if(criteria.endDate != null) {
-      filteredTasks = filteredTasks.filter(task => new Date(task.endDate) <= new Date(criteria.endDate));      
+    //console.log(criteria.endDate);
+    if(criteria.EndDate != null) {
+      filteredTasks = filteredTasks.filter(task => new Date(task.EndDate) <= new Date(criteria.EndDate));      
     }
     return filteredTasks;
   }

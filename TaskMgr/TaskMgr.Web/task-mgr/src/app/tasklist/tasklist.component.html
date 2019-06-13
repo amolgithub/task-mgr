@@ -10,16 +10,16 @@
       <th></th>
       <th></th>
     </tr>
-    <tr *ngFor="let task of taskList | search : criteria">
-      <td>{{task.taskName}}</td>
-      <td>{{task.parentTask}}</td>
-      <td>{{task.priority}}</td>
-      <td>{{task.startDate}}</td>
-      <td>{{task.endDate}}</td>
+    <tr *ngFor="let task of taskList | search : criteria" ng-class="task.Status == 'C'? 'completed': ''">
+      <td>{{task.TaskName}}</td>
+      <td>{{task.ParentTask}}</td>
+      <td>{{task.Priority}}</td>
+      <td>{{task.StartDate}}</td>
+      <td>{{task.EndDate}}</td>
       <td>
         <span class="pull-right">
-        <button class="btn btn-primary">Edit</button>&nbsp;
-        <button class="btn btn-light">End Task</button>
+        <button class="btn btn-primary" (click)="onEdit(task)" [disabled]="task.Status == 'C'">Edit</button>&nbsp;
+        <button class="btn btn-light" (click)="onEnd(task)" [disabled]="task.Status == 'C'">End Task</button>
       </span>
       </td>
     </tr>

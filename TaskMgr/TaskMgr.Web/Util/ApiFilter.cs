@@ -12,9 +12,14 @@ namespace TaskMgr.Web.Util
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            base.OnActionExecuting(actionContext);
+            base.OnActionExecuting(actionContext);            
             var logger = LogManager.GetLogger(actionContext.ControllerContext.ControllerDescriptor.ControllerName);
             logger.Info(actionContext.ActionDescriptor.ActionName);
+        }
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {
+            base.OnActionExecuted(actionExecutedContext);
+            actionExecutedContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
         }
     }
 
@@ -24,7 +29,7 @@ namespace TaskMgr.Web.Util
         {
             base.OnException(actionExecutedContext);
             var logger = LogManager.GetLogger(actionExecutedContext.ActionContext.ControllerContext.ControllerDescriptor.ControllerName);
-            logger.ErrorFormat("{0}: {1}", actionExecutedContext.ActionContext.ActionDescriptor.ActionName, actionExecutedContext.Exception.Message);
+            logger.ErrorFormat("{0}: {1}\n{2}", actionExecutedContext.ActionContext.ActionDescriptor.ActionName, actionExecutedContext.Exception.Message, actionExecutedContext.Exception.StackTrace);
         }
     }
 }

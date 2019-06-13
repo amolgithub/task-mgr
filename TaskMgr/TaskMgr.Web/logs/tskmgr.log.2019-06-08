@@ -1,0 +1,6 @@
+INFO 2019-06-08 20:24:47,341 Task - All
+INFO 2019-06-08 20:42:49,531 Task - All
+INFO 2019-06-08 20:46:58,522 Task - All
+INFO 2019-06-08 21:02:18,243 Task - Test
+INFO 2019-06-08 21:02:18,322 Task - All
+ERROR 2019-06-08 21:05:46,346 Task - Add: Processing of the HTTP request resulted in an exception. Please see the HTTP response returned by the 'Response' property of this exception for details.

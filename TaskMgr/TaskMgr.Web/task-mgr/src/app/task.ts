@@ -1,9 +1,10 @@
 export interface Task {
-    taskId: number;
-    taskName: string;
-    startDate: string;
-    endDate: string;
-    priority: number;
-    status: string;
-    parentId: number;
+    TaskId: number;
+    TaskName: string;
+    StartDate: string;
+    EndDate: string;
+    Priority: number;
+    Status: string;
+    ParentId: number;
+    ParentTask: string;
 }

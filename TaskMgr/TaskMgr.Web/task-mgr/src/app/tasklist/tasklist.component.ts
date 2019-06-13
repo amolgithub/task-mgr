@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter,Output } from '@angular/core';
 import { Task } from '../task';
 import { TaskService } from 'src/app/services/task.service';
+import {Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasklist',
@@ -13,8 +15,10 @@ export class TasklistComponent implements OnInit {
   taskList: any;
   filter: any;
   criteria: any;
-  
-  constructor(private service: TaskService) {     
+  message: string;
+  @Output() taskSelected = new EventEmitter<Task>();
+
+  constructor(private router:Router, private service: TaskService) {     
   //  this.taskList = [
   //     {
   //       taskId: 1,
@@ -43,28 +47,26 @@ export class TasklistComponent implements OnInit {
   //       status: 'I',
   //       parentTask: "Task1"
   //     }      
-  //   ];
-    service.getTaskList()    
+  //   ];    
+
+    this.service.getTaskList()    
     .subscribe(response => {
       console.log(response); 
       this.taskList = response;
-    });
-    /*(tasks => {this.taskList = tasks},
-      err => console.error(err));*/
-    console.log(this.taskList);
-    this.taskSource = this.taskList;
+      this.taskSource = response;
+    });    
   }
 
   filterGrid(filter) {
     this.taskList = this.taskSource;
     console.log(filter);    
-    if(filter.taskName != null) {
-      this.taskList = this.taskSource.filter((task) => task.taskName.indexOf(filter.taskName) > -1);
+    if(filter.TaskName != null) {
+      this.taskList = this.taskSource.filter((task) => task.TaskName.indexOf(filter.TaskName) > -1);
       //console.log('Searching on name');
     }
    
-    if(filter.parentTask != null) {
-      this.taskList = this.taskList.filter((task) => task.parentTask && task.parentTask.indexOf(filter.parentTask) > -1);
+    if(filter.ParentTask != null) {
+      this.taskList = this.taskList.filter((task) => task.ParentTask && task.ParentTask.indexOf(filter.parentTask) > -1);
       //console.log('Searching on parent');
     }
       
@@ -94,4 +96,17 @@ export class TasklistComponent implements OnInit {
   ngOnInit() {
   }
 
+  onEdit (task: Task): void {
+    this.service.selectTask(task);
+    this.router.navigate(['/edittask']);
+    console.log(task);
+  }
+
+  onEnd (task: Task): void {
+    console.log('end');
+    this.service.endTask(task.TaskId).subscribe((data) => {
+      console.log('end completed');
+      this.router.navigate(['/taskview']);
+    })
+  }
 }

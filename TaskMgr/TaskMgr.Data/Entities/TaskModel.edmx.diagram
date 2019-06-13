@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="0c0bd4618b9245e99820b36e3704afce" Name="Diagram1">
         <EntityTypeShape EntityType="TaskMgrModel.Task" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="TaskMgrModel.fk_parent_id" ManuallyRouted="false" />
+        <AssociationConnector Association="TaskMgrModel.fk_parent_id1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

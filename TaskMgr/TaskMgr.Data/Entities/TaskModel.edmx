@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TaskMgrModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TaskMgrModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Task">
           <Key>
             <PropertyRef Name="TaskId" />
@@ -36,8 +36,7 @@
             <End Role="Task1" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TaskMgrModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -52,12 +51,19 @@
           <Property Name="Priority" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="ParentId" Type="Int32" />
-          <NavigationProperty Name="ParentTask" Relationship="Self.fk_parent_id" FromRole="Task" ToRole="Task1" />
-          <NavigationProperty Name="ChildrenTasks" Relationship="Self.fk_parent_id" FromRole="Task1" ToRole="Task" />
+          <NavigationProperty Name="Task1" Relationship="TaskMgrModel.fk_parent_id1" FromRole="Task" ToRole="Task1" />
+          <NavigationProperty Name="Task2" Relationship="TaskMgrModel.fk_parent_id1" FromRole="Task1" ToRole="Task" />
         </EntityType>
-        <Association Name="fk_parent_id">
-          <End Role="Task" Type="Self.Task" Multiplicity="0..1" />
-          <End Role="Task1" Type="Self.Task" Multiplicity="*" />
+        <EntityContainer Name="TaskMgrEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tasks" EntityType="Self.Task" />
+          <AssociationSet Name="fk_parent_id1" Association="TaskMgrModel.fk_parent_id1">
+            <End Role="Task" EntitySet="Tasks" />
+            <End Role="Task1" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="fk_parent_id1">
+          <End Type="TaskMgrModel.Task" Role="Task" Multiplicity="0..1" />
+          <End Type="TaskMgrModel.Task" Role="Task1" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Task">
               <PropertyRef Name="TaskId" />
@@ -67,13 +73,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TaskMgrEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Tasks" EntityType="Self.Task" />
-          <AssociationSet Name="fk_parent_id" Association="Self.fk_parent_id">
-            <End Role="Task" EntitySet="Tasks" />
-            <End Role="Task1" EntitySet="Tasks" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

@@ -1,0 +1,7 @@
+INFO 2019-06-02 21:29:55,315 TaskMgr.Web.Controllers.api.TaskController - TaskManager.All
+INFO 2019-06-02 21:32:09,146 TaskMgr.Web.Controllers.api.TaskController - TaskManager.All
+INFO 2019-06-02 21:56:43,521 MyTask - http://localhost:50019/api/task/all
+INFO 2019-06-02 21:56:48,666 TaskMgr.Web.Controllers.api.TaskController - TaskManager.All
+INFO 2019-06-02 22:05:47,052 Task - All
+INFO 2019-06-02 22:08:46,829 Task - All
+ERROR 2019-06-02 22:08:54,701 Task - All: Test exception

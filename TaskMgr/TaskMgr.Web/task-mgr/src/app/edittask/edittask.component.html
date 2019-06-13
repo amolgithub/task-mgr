@@ -1,12 +1,12 @@
 <div class="container">
 <h2>Add Task</h2>
-<form action="" [formGroup]="taskForm" (ngSubmit)="submitTask()" (ngReset)="reset()">
+<form action="" (ngSubmit)="submitTask()" (ngReset)="reset()">
   
     <div class="row">
         <div class="col-md-2"><label>Task Name</label></div>
       <div class="col-md-5">
         <div class="form-group">          
-          <input type="text" class="form-control" formControlName="taskName">
+          <input type="text" class="form-control" name="TaskName" [(ngModel)]="task.TaskName">
         </div>
       </div>  
     </div>
@@ -18,7 +18,8 @@
           list="prioritylist" 
           class="form-control" 
           min="1" max="10" value="1" step="1" 
-          formControlName="priority">
+          name="Priority"
+           [(ngModel)]="task.Priority">
           <datalist id="prioritylist">
               <option value="1" label="1"></option>
               <option value="2"></option>
@@ -38,8 +39,9 @@
         <div class="col-md-2"><label>Parent Task (Optional)</label></div>
         <div class="col-md-5">
          <div class="form-group">          
-          <select formControlName="parentId" value="0">
+          <select value="0" [(ngModel)]="task.ParentId" name="ParentId">
             <option value="0">No parent task</option>
+            <option *ngFor="let p of parentList" value="{{p.ParentId}}">{{p.ParentTask}}</option>
           </select>
         </div>
       </div>  
@@ -48,7 +50,7 @@
        <div class="col-md-2"><label>Start Date</label></div>
         <div class="col-md-5">
          <div class="form-group">          
-          <input type="date" formControlName="startDate">
+          <input type="date" name="StartDate" [(ngModel)]="task.StartDate">
         </div>
       </div>  
     </div>
@@ -56,7 +58,7 @@
         <div class="col-md-2"><label>End Date</label></div>
         <div class="col-md-5">
          <div class="form-group">          
-          <input type="date" formControlName="endDate">
+          <input type="date" name="EndDate" [(ngModel)]="task.EndDate">
         </div>
       </div>  
     </div>

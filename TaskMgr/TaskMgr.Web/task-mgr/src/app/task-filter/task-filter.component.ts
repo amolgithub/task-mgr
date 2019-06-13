@@ -12,12 +12,12 @@ export class TaskFilterComponent implements OnInit {
   public filterEvent = new EventEmitter();
 
   public filterForm = this.fb.group({
-    taskName : [''],
-    parentTask: [''],
-    priorityFrom: [1],
-    priorityTo: [10],
-    startDate: [null],
-    endDate: [null]
+    TaskName : [''],
+    ParentTask: [''],
+    PriorityFrom: [1],
+    PriorityTo: [10],
+    StartDate: [null],
+    EndDate: [null]
   });
   
   public filterGrid() {

@@ -17,7 +17,7 @@ namespace TaskMgr.Data.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Task()
         {
-            this.ParentTask = new HashSet<Task>();
+            this.Task1 = new HashSet<Task>();
         }
     
         public int TaskId { get; set; }
@@ -29,7 +29,7 @@ namespace TaskMgr.Data.Entities
         public Nullable<int> ParentId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Task> ParentTask { get; set; }
-        public virtual Task ChildrenTasks { get; set; }
+        public virtual ICollection<Task> Task1 { get; set; }
+        public virtual Task Task2 { get; set; }
     }
 }

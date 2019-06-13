@@ -27,7 +27,7 @@ namespace TaskMgr.Data.Entities
 
         public void MarkAsModified(Task t)
         {
-            Entry(t).State = EntityState.Modified;
+         
         }
 
         public virtual DbSet<Task> Tasks { get; set; }

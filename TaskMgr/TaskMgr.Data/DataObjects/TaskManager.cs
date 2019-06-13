@@ -34,12 +34,13 @@ namespace TaskMgr.Data.DataObjects
             var foundTask = GetTask(modifiedTask.TaskId);
             if(foundTask == null)
             {
+                modifiedTask.ParentId = modifiedTask.ParentId == 0 ? null : modifiedTask.ParentId;
                 _context.Tasks.Add(modifiedTask);
             }
             else
             {
                 foundTask.EndDate = modifiedTask.EndDate;
-                foundTask.ParentId = modifiedTask.ParentId;
+                foundTask.ParentId = modifiedTask.ParentId == 0? null: modifiedTask.ParentId;
                 foundTask.Priority = modifiedTask.Priority;
                 foundTask.StartDate = modifiedTask.StartDate;
                 foundTask.TaskName = modifiedTask.TaskName;
